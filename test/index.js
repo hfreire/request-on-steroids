@@ -10,7 +10,7 @@ describe('Module', () => {
   let RequestOnSteroids
 
   before(() => {
-    RequestOnSteroids = td.object()
+    RequestOnSteroids = td.object([])
   })
 
   afterEach(() => td.reset())
@@ -23,7 +23,7 @@ describe('Module', () => {
     })
 
     it('should export request on steroids', () => {
-      subject.should.have.property('RequestOnSteroids', RequestOnSteroids)
+      subject.should.be.equal(RequestOnSteroids)
     })
   })
 })

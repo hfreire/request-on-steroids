@@ -29,8 +29,8 @@ describe('Request On Steroids', () => {
 
       td.replace('random-http-useragent', RandomHttpUserAgent)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids(options)
+      const Request = require('../src/request-on-steroids')
+      subject = new Request(options)
     })
 
     it('should set default request options', () => {
@@ -44,8 +44,8 @@ describe('Request On Steroids', () => {
 
   describe('when constructing and loading request', () => {
     beforeEach(() => {
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should create a request with defaults function', () => {
@@ -86,8 +86,8 @@ describe('Request On Steroids', () => {
 
   describe('when constructing and loading brakes', () => {
     beforeEach(() => {
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should create a circuit breaker with slaveCircuit function', () => {
@@ -105,8 +105,8 @@ describe('Request On Steroids', () => {
       td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
       td.replace('request', request)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should do a get request to my-url', () => {
@@ -120,6 +120,96 @@ describe('Request On Steroids', () => {
           options.should.have.property('url', url)
         })
     })
+
+    it('should fail with invalid arguments when missing url', () => {
+      return subject.get()
+        .catch((error) => {
+          error.message.should.be.equal('invalid arguments')
+        })
+    })
+  })
+
+  describe('when doing a get request with a random http user-agent', () => {
+    const url = 'my-url'
+    const options = { url, randomHttpUserAgent: true }
+    const userAgent = 'my-user-agent'
+
+    beforeEach(() => {
+      td.replace('random-http-useragent', RandomHttpUserAgent)
+      td.when(RandomHttpUserAgent.get()).thenResolve(userAgent)
+
+      td.when(request.defaults(), { ignoreExtraArgs: true }).thenReturn(request)
+      td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
+      td.replace('request', request)
+
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
+    })
+
+    it('should get a random user agent', () => {
+      return subject.get(options)
+        .then(() => {
+          td.verify(RandomHttpUserAgent.get(), { times: 1 })
+        })
+    })
+
+    it('should use a random user agent in the get request', () => {
+      return subject.get(options)
+        .then(() => {
+          const captor = td.matchers.captor()
+
+          td.verify(request.get(captor.capture()), { ignoreExtraArgs: true })
+
+          const options = captor.value
+
+          options.should.have.nested.property('headers.User-Agent')
+          options.headers[ 'User-Agent' ].should.be.equal(userAgent)
+        })
+    })
+  })
+
+  describe('when doing a get request with tor', () => {
+    const url = 'my-url'
+    const options = { url, tor: true }
+    const userAgent = 'my-user-agent'
+
+    beforeEach(() => {
+      td.replace('random-http-useragent', RandomHttpUserAgent)
+      td.when(RandomHttpUserAgent.get()).thenResolve(userAgent)
+
+      td.when(request.defaults(), { ignoreExtraArgs: true }).thenReturn(request)
+      td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
+      td.replace('request', request)
+
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
+    })
+
+    it('should use agentClass in the get request', () => {
+      return subject.get(options)
+        .then(() => {
+          const captor = td.matchers.captor()
+
+          td.verify(request.get(captor.capture()), { ignoreExtraArgs: true })
+
+          const options = captor.value
+
+          options.should.have.property('agentClass')
+        })
+    })
+
+    it('should use agentOptions in the get request', () => {
+      return subject.get(options)
+        .then(() => {
+          const captor = td.matchers.captor()
+
+          td.verify(request.get(captor.capture()), { ignoreExtraArgs: true })
+
+          const options = captor.value
+
+          options.should.have.property('agentOptions')
+        })
+    })
   })
 
   describe('when doing a post request', () => {
@@ -131,8 +221,8 @@ describe('Request On Steroids', () => {
       td.when(request.post(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
       td.replace('request', request)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should do a post request to my-url', () => {
@@ -157,8 +247,8 @@ describe('Request On Steroids', () => {
       td.when(request.put(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
       td.replace('request', request)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should do a put request to my-url', () => {
@@ -183,8 +273,8 @@ describe('Request On Steroids', () => {
       td.when(request.patch(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
       td.replace('request', request)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should do a patch request to my-url', () => {
@@ -209,8 +299,8 @@ describe('Request On Steroids', () => {
       td.when(request.del(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
       td.replace('request', request)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should do a delete request to my-url', () => {
@@ -235,8 +325,8 @@ describe('Request On Steroids', () => {
       td.when(request.head(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
       td.replace('request', request)
 
-      const RequestOnSteroids = require('../src/request-on-steroids')
-      subject = new RequestOnSteroids()
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
     })
 
     it('should do a head request to my-url', () => {

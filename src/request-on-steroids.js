@@ -32,10 +32,11 @@ const buildOptions = function (options) {
     if (_options.randomHttpUserAgent) {
       return RandomHttpUserAgent.get()
         .then((userAgent) => {
-          options.headers = _.assign({}, _options.headers, { 'User-Agent': userAgent })
+          _options.headers = _.assign({}, _options.headers, { 'User-Agent': userAgent })
         })
     }
   })
+    .then(() => _options)
 }
 
 const defaultOptions = {
@@ -64,34 +65,38 @@ class RequestOnSteroids {
     RandomHttpUserAgent.configure(this._options[ 'random-http-useragent' ])
   }
 
+  get circuitBreaker () {
+    return this._circuitBreaker
+  }
+
   get (options) {
-    return buildOptions(options)
-      .then(() => this._request.getCircuitBreaker.exec(options))
+    return buildOptions.bind(this)(options)
+      .then((options) => this._request.getCircuitBreaker.exec(options))
   }
 
   post (options) {
-    return buildOptions(options)
-      .then(() => this._request.postCircuitBreaker.exec(options))
+    return buildOptions.bind(this)(options)
+      .then((options) => this._request.postCircuitBreaker.exec(options))
   }
 
   put (options) {
-    return buildOptions(options)
-      .then(() => this._request.putCircuitBreaker.exec(options))
+    return buildOptions.bind(this)(options)
+      .then((options) => this._request.putCircuitBreaker.exec(options))
   }
 
   patch (options) {
-    return buildOptions(options)
-      .then(() => this._request.patchCircuitBreaker.exec(options))
+    return buildOptions.bind(this)(options)
+      .then((options) => this._request.patchCircuitBreaker.exec(options))
   }
 
   del (options) {
-    return buildOptions(options)
-      .then(() => this._request.delCircuitBreaker.exec(options))
+    return buildOptions.bind(this)(options)
+      .then((options) => this._request.delCircuitBreaker.exec(options))
   }
 
   head (options) {
-    return buildOptions(options)
-      .then(() => this._request.headCircuitBreaker.exec(options))
+    return buildOptions.bind(this)(options)
+      .then((options) => this._request.headCircuitBreaker.exec(options))
   }
 }
 

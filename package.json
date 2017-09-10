@@ -19,7 +19,9 @@
     "brakes": "2.5.3",
     "lodash": "4.17.4",
     "random-http-useragent": "^1.1.1",
-    "request": "2.81.0"
+    "request": "2.81.0",
+    "socks5-http-client": "1.0.2",
+    "socks5-https-client": "1.2.1"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",

@@ -1,4 +1,4 @@
-# An HTTP client ✨ with retry, circuit-breaker and tor support 📦 out-of-the-box
+# An HTTP client :sparkles: with retry, circuit-breaker and tor support :package: out-of-the-box
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Build Status](https://travis-ci.org/hfreire/request-on-steroids.svg?branch=master)](https://travis-ci.org/hfreire/request-on-steroids)
@@ -20,3 +20,7 @@ An HTTP client with retry, circuit-breaker and tor support out-of-the-box.
 ```
 npm install request-on-steroids
 ```
+
+### Used by
+* [watch-rtp-play](https://github.com/hfreire/watch-rtp-play) - :tv: Watch and :radio: listen 🇵🇹 RTP Play without a :computer: browser
+* [pollmommy](https://github.com/hfreire/pollmommy) - ⭐️ Hack your 🙈 vote out of 📈 Polldaddy surveys - used by 💰 BBC, Microsoft, Forbes, Pfizer, IBM

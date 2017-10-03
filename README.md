@@ -1,4 +1,4 @@
-# An HTTP client :sparkles: with retry, circuit-breaker and tor support :package: out-of-the-box
+# An HTTP client :sparkles: with rate limiter, retry, circuit-breaker and tor support :package: out-of-the-box
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Build Status](https://travis-ci.org/hfreire/request-on-steroids.svg?branch=master)](https://travis-ci.org/hfreire/request-on-steroids)

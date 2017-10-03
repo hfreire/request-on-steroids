@@ -1,6 +1,6 @@
 {
   "name": "request-on-steroids",
-  "description": "An HTTP client with retry, circuit-breaker and tor support out-of-the-box",
+  "description": "An HTTP client with rate limiter, retry, circuit-breaker and tor support out-of-the-box",
   "version": "0.0.0",
   "main": "lib/index.js",
   "repository": {

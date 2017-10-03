@@ -9,7 +9,7 @@
 [![Version](https://img.shields.io/npm/v/request-on-steroids.svg)](https://www.npmjs.com/package/request-on-steroids)
 [![Downloads](https://img.shields.io/npm/dt/request-on-steroids.svg)](https://www.npmjs.com/package/request-on-steroids) 
 
-An HTTP client with retry, circuit-breaker and tor support out-of-the-box.
+> An HTTP client with rate limiter, retry, circuit-breaker and tor support out-of-the-box.
 
 ### Features
 * Limits :raised_hand: rate of outgoing requests to behave like a good :earth_africa: Internet API :bowtie: citizen :white_check_mark: 

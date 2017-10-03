@@ -9,6 +9,8 @@ const _ = require('lodash')
 const Promise = require('bluebird')
 const retry = require('bluebird-retry')
 const Brakes = require('brakes')
+const PQueue = require('p-queue')
+const { RateLimiter } = require('limiter')
 
 const request = require('request')
 
@@ -39,12 +41,40 @@ const buildOptions = function (options) {
     .then(() => _options)
 }
 
+const doRetrieableRequest = function (request, params) {
+  return retry(() => request(params), this._options.retry)
+}
+
+const doRateableRequest = function (request, params) {
+  return this._rate.removeTokensAsync(1)
+    .then(() => doRetrieableRequest.bind(this)(request, params))
+}
+
+const doBreakableRequest = function (request, params) {
+  return this._circuitBreaker.exec(request, params)
+}
+
+const doQueueableRequest = function (request, params) {
+  return new Promise((resolve, reject) => {
+    return this._queue.add(() => {
+      return doBreakableRequest.bind(this)(request, params)
+        .then(resolve)
+        .catch(reject)
+    })
+  })
+}
+
 const defaultOptions = {
   request: { gzip: true },
   retry: { max_tries: 3, interval: 1000, timeout: 3000, throw_original: true },
   breaker: { timeout: 12000, threshold: 80, circuitDuration: 30000 },
   'random-http-useragent': { maxAge: 600000, preFetch: true },
-  socks: { socksHost: 'localhost', socksPort: 9050 }
+  socks: { socksHost: 'localhost', socksPort: 9050 },
+  rate: {
+    requests: 1,
+    period: 250,
+    queue: { concurrency: 1 }
+  }
 }
 
 class RequestOnSteroids {
@@ -53,16 +83,12 @@ class RequestOnSteroids {
 
     this._request = Promise.promisifyAll(request.defaults(this._options.request))
 
-    this._circuitBreaker = new Brakes(this._options.breaker)
-
-    this._request.getCircuitBreaker = this._circuitBreaker.slaveCircuit((params) => retry(() => this._request.getAsync(params), this._options.retry))
-    this._request.postCircuitBreaker = this._circuitBreaker.slaveCircuit((params) => retry(() => this._request.postAsync(params), this._options.retry))
-    this._request.putCircuitBreaker = this._circuitBreaker.slaveCircuit((params) => retry(() => this._request.putAsync(params), this._options.retry))
-    this._request.patchCircuitBreaker = this._circuitBreaker.slaveCircuit((params) => retry(() => this._request.patchAsync(params), this._options.retry))
-    this._request.delCircuitBreaker = this._circuitBreaker.slaveCircuit((params) => retry(() => this._request.delAsync(params), this._options.retry))
-    this._request.headCircuitBreaker = this._circuitBreaker.slaveCircuit((params) => retry(() => this._request.headAsync(params), this._options.retry))
+    this._circuitBreaker = new Brakes(doRateableRequest.bind(this), this._options.breaker)
 
     RandomHttpUserAgent.configure(this._options[ 'random-http-useragent' ])
+
+    this._rate = Promise.promisifyAll(new RateLimiter(this._options.rate.requests, this._options.rate.period))
+    this._queue = new PQueue(this._options.rate.queue)
   }
 
   get circuitBreaker () {
@@ -71,32 +97,32 @@ class RequestOnSteroids {
 
   get (options) {
     return buildOptions.bind(this)(options)
-      .then((options) => this._request.getCircuitBreaker.exec(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.getAsync, options))
   }
 
   post (options) {
     return buildOptions.bind(this)(options)
-      .then((options) => this._request.postCircuitBreaker.exec(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.postAsync, options))
   }
 
   put (options) {
     return buildOptions.bind(this)(options)
-      .then((options) => this._request.putCircuitBreaker.exec(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.putAsync, options))
   }
 
   patch (options) {
     return buildOptions.bind(this)(options)
-      .then((options) => this._request.patchCircuitBreaker.exec(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.patchAsync, options))
   }
 
   del (options) {
     return buildOptions.bind(this)(options)
-      .then((options) => this._request.delCircuitBreaker.exec(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.delAsync, options))
   }
 
   head (options) {
     return buildOptions.bind(this)(options)
-      .then((options) => this._request.headCircuitBreaker.exec(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.headAsync, options))
   }
 }
 

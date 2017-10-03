@@ -96,6 +96,30 @@ describe('Request On Steroids', () => {
     })
   })
 
+  describe('when constructing and loading limiter', () => {
+    beforeEach(() => {
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
+    })
+
+    it('should create a queue with removeTokensAsync function', () => {
+      subject._rate.should.have.property('removeTokensAsync')
+      subject._rate.removeTokensAsync.should.be.instanceOf(Function)
+    })
+  })
+
+  describe('when constructing and loading queue', () => {
+    beforeEach(() => {
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
+    })
+
+    it('should create a queue with add function', () => {
+      subject._queue.should.have.property('add')
+      subject._queue.add.should.be.instanceOf(Function)
+    })
+  })
+
   describe('when doing a get request', () => {
     const url = 'my-url'
     const options = { url }

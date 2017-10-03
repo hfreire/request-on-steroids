@@ -41,23 +41,28 @@ const buildOptions = function (options) {
     .then(() => _options)
 }
 
-const doRateableRequest = function (request, params) {
+const doRequest = function (request, options, responseHandler) {
+  return request(options)
+    .then(responseHandler)
+}
+
+const doRateableRequest = function (request, options, responseHandler) {
   return this._rate.removeTokensAsync(1)
-    .then(() => request(params))
+    .then(() => doRequest.bind(this)(request, options, responseHandler))
 }
 
-const doRetrieableRequest = function (request, params) {
-  return retry(() => doRateableRequest.bind(this)(request, params), this._options.retry)
+const doRetrieableRequest = function (request, options, responseHandler) {
+  return retry(() => doRateableRequest.bind(this)(request, options, responseHandler), this._options.retry)
 }
 
-const doBreakableRequest = function (request, params) {
-  return this._circuitBreaker.exec(request, params)
+const doBreakableRequest = function (request, options, responseHandler) {
+  return this._circuitBreaker.exec(request, options, responseHandler)
 }
 
-const doQueueableRequest = function (request, params) {
+const doQueueableRequest = function (request, options, responseHandler) {
   return new Promise((resolve, reject) => {
     return this._queue.add(() => {
-      return doBreakableRequest.bind(this)(request, params)
+      return doBreakableRequest.bind(this)(request, options, responseHandler)
         .then(resolve)
         .catch(reject)
     })
@@ -95,34 +100,64 @@ class RequestOnSteroids {
     return this._circuitBreaker
   }
 
-  get (options) {
-    return buildOptions.bind(this)(options)
-      .then((options) => doQueueableRequest.bind(this)(this._request.getAsync, options))
+  get (options, responseHandler = (response) => response) {
+    return Promise.try(() => {
+      if (!_.isFunction(responseHandler)) {
+        throw new Error('invalid arguments')
+      }
+    })
+      .then(() => buildOptions.bind(this)(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.getAsync, options, responseHandler))
   }
 
-  post (options) {
-    return buildOptions.bind(this)(options)
-      .then((options) => doQueueableRequest.bind(this)(this._request.postAsync, options))
+  post (options, responseHandler = (response) => response) {
+    return Promise.try(() => {
+      if (!_.isFunction(responseHandler)) {
+        throw new Error('invalid arguments')
+      }
+    })
+      .then(() => buildOptions.bind(this)(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.postAsync, options, responseHandler))
   }
 
-  put (options) {
-    return buildOptions.bind(this)(options)
-      .then((options) => doQueueableRequest.bind(this)(this._request.putAsync, options))
+  put (options, responseHandler = (response) => response) {
+    return Promise.try(() => {
+      if (!_.isFunction(responseHandler)) {
+        throw new Error('invalid arguments')
+      }
+    })
+      .then(() => buildOptions.bind(this)(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.putAsync, options, responseHandler))
   }
 
-  patch (options) {
-    return buildOptions.bind(this)(options)
-      .then((options) => doQueueableRequest.bind(this)(this._request.patchAsync, options))
+  patch (options, responseHandler = (response) => response) {
+    return Promise.try(() => {
+      if (!_.isFunction(responseHandler)) {
+        throw new Error('invalid arguments')
+      }
+    })
+      .then(() => buildOptions.bind(this)(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.patchAsync, options, responseHandler))
   }
 
-  del (options) {
-    return buildOptions.bind(this)(options)
-      .then((options) => doQueueableRequest.bind(this)(this._request.delAsync, options))
+  del (options, responseHandler = (response) => response) {
+    return Promise.try(() => {
+      if (!_.isFunction(responseHandler)) {
+        throw new Error('invalid arguments')
+      }
+    })
+      .then(() => buildOptions.bind(this)(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.delAsync, options, responseHandler))
   }
 
-  head (options) {
-    return buildOptions.bind(this)(options)
-      .then((options) => doQueueableRequest.bind(this)(this._request.headAsync, options))
+  head (options, responseHandler = (response) => response) {
+    return Promise.try(() => {
+      if (!_.isFunction(responseHandler)) {
+        throw new Error('invalid arguments')
+      }
+    })
+      .then(() => buildOptions.bind(this)(options))
+      .then((options) => doQueueableRequest.bind(this)(this._request.headAsync, options, responseHandler))
   }
 }
 

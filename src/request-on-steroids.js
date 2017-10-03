@@ -41,13 +41,13 @@ const buildOptions = function (options) {
     .then(() => _options)
 }
 
-const doRetrieableRequest = function (request, params) {
-  return retry(() => request(params), this._options.retry)
-}
-
 const doRateableRequest = function (request, params) {
   return this._rate.removeTokensAsync(1)
-    .then(() => doRetrieableRequest.bind(this)(request, params))
+    .then(() => request(params))
+}
+
+const doRetrieableRequest = function (request, params) {
+  return retry(() => doRateableRequest.bind(this)(request, params), this._options.retry)
 }
 
 const doBreakableRequest = function (request, params) {
@@ -83,7 +83,7 @@ class RequestOnSteroids {
 
     this._request = Promise.promisifyAll(request.defaults(this._options.request))
 
-    this._circuitBreaker = new Brakes(doRateableRequest.bind(this), this._options.breaker)
+    this._circuitBreaker = new Brakes(doRetrieableRequest.bind(this), this._options.breaker)
 
     RandomHttpUserAgent.configure(this._options[ 'random-http-useragent' ])
 

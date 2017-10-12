@@ -17,28 +17,40 @@ const request = require('request')
 const RandomHttpUserAgent = require('random-http-useragent')
 
 const buildOptions = function (options) {
-  if (!options || !options.url) {
-    return Promise.reject(new Error('invalid arguments'))
-  }
-
-  const _options = _.clone(options)
-
-  if (_options.tor) {
-    const agentClass = _.startsWith(_options.url, 'https') ? require('socks5-https-client/lib/Agent') : require('socks5-http-client/lib/Agent')
-    const agentOptions = this._options.socks
-
-    _.merge(_options, { agentClass, agentOptions })
-  }
-
   return Promise.try(() => {
-    if (_options.randomHttpUserAgent) {
-      return RandomHttpUserAgent.get()
-        .then((userAgent) => {
-          _options.headers = _.assign({}, _options.headers, { 'User-Agent': userAgent })
-        })
+    if (!options) {
+      throw new Error('invalid arguments')
     }
+
+    const _url = options.url || options.uri
+
+    if (!_url) {
+      throw new Error('invalid arguments')
+    }
+
+    const _options = _.clone(options)
+
+    if (_options.tor) {
+      const agentClass = _.startsWith(_url, 'https') ? require('socks5-https-client/lib/Agent') : require('socks5-http-client/lib/Agent')
+      const agentOptions = this._options.socks
+
+      _.merge(_options, { agentClass, agentOptions })
+    }
+
+    return _options
   })
-    .then(() => _options)
+    .then((options) => {
+      if (options.randomHttpUserAgent) {
+        return RandomHttpUserAgent.get()
+          .then((userAgent) => {
+            options.headers = _.assign({}, options.headers, { 'User-Agent': userAgent })
+
+            return options
+          })
+      }
+
+      return options
+    })
 }
 
 const doRequest = function (request, options, responseHandler) {

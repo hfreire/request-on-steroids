@@ -40,7 +40,7 @@ const buildOptions = function (options) {
     return _options
   })
     .then((options) => {
-      if (options.randomHttpUserAgent) {
+      if (_.get(this._options, 'random-http-useragent')) {
         return RandomHttpUserAgent.get()
           .then((userAgent) => {
             options.headers = _.assign({}, options.headers, { 'User-Agent': userAgent })
@@ -85,7 +85,6 @@ const defaultOptions = {
   request: { gzip: true },
   retry: { max_tries: 3, interval: 1000, timeout: 3000, throw_original: true },
   breaker: { timeout: 12000, threshold: 80, circuitDuration: 30000 },
-  'random-http-useragent': { maxAge: 600000, preFetch: true },
   socks: { socksHost: 'localhost', socksPort: 9050 },
   rate: {
     requests: 1,
@@ -102,7 +101,7 @@ class RequestOnSteroids {
 
     this._circuitBreaker = new Brakes(doRetrieableRequest.bind(this), this._options.breaker)
 
-    RandomHttpUserAgent.configure(this._options[ 'random-http-useragent' ])
+    RandomHttpUserAgent.configure(_.get(this._options, 'random-http-useragent'))
 
     this._rate = Promise.promisifyAll(new RateLimiter(this._options.rate.requests, this._options.rate.period))
     this._queue = new PQueue(this._options.rate.queue)

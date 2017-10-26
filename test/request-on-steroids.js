@@ -10,10 +10,13 @@
 describe('Request On Steroids', () => {
   let subject
   let request
+  let Brakes
   let RandomHttpUserAgent
 
   before(() => {
     request = td.object([ 'defaults', 'get', 'post', 'put', 'patch', 'del', 'head' ])
+
+    Brakes = td.constructor([ 'exec' ])
 
     RandomHttpUserAgent = td.object([ 'configure', 'get' ])
   })
@@ -363,6 +366,19 @@ describe('Request On Steroids', () => {
           const options = captor.value
           options.should.have.property('url', url)
         })
+    })
+  })
+
+  describe('when getting circuit breaker', () => {
+    beforeEach(() => {
+      td.replace('brakes', Brakes)
+
+      const Request = require('../src/request-on-steroids')
+      subject = new Request()
+    })
+
+    it('should return a brakes instance', () => {
+      subject.circuitBreaker.should.be.instanceOf(Brakes)
     })
   })
 })

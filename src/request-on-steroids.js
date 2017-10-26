@@ -40,7 +40,7 @@ const buildOptions = function (options) {
     return _options
   })
     .then((options) => {
-      if (_.get(this._options, 'random-http-useragent')) {
+      if (options.randomHttpUserAgent) {
         return RandomHttpUserAgent.get()
           .then((userAgent) => {
             options.headers = _.assign({}, options.headers, { 'User-Agent': userAgent })

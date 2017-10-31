@@ -97,14 +97,14 @@ class RequestOnSteroids {
   constructor (options = {}) {
     this._options = _.defaultsDeep(options, defaultOptions)
 
-    this._request = Promise.promisifyAll(request.defaults(this._options.request))
+    this._request = Promise.promisifyAll(request.defaults(_.get(this._options, 'request')))
 
-    this._circuitBreaker = new Brakes(doRetrieableRequest.bind(this), this._options.breaker)
+    this._circuitBreaker = new Brakes(doRetrieableRequest.bind(this), _.get(this._options, 'breaker'))
 
     RandomHttpUserAgent.configure(_.get(this._options, 'random-http-useragent'))
 
-    this._rate = Promise.promisifyAll(new RateLimiter(this._options.rate.requests, this._options.rate.period))
-    this._queue = new PQueue(this._options.rate.queue)
+    this._rate = Promise.promisifyAll(new RateLimiter(_.get(this._options, 'rate.requests'), _.get(this._options, 'rate.period')))
+    this._queue = new PQueue(_.get(this._options, 'rate.queue'))
   }
 
   get circuitBreaker () {

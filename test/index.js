@@ -7,23 +7,23 @@
 
 describe('Module', () => {
   let subject
-  let RequestOnSteroids
+  let Request
 
   before(() => {
-    RequestOnSteroids = td.object([])
+    Request = td.object([])
   })
 
   afterEach(() => td.reset())
 
   describe('when loading', () => {
     beforeEach(() => {
-      td.replace('../src/request-on-steroids', RequestOnSteroids)
+      td.replace('../src/request-on-steroids', Request)
 
       subject = require('../src/index')
     })
 
-    it('should export request on steroids', () => {
-      subject.should.be.equal(RequestOnSteroids)
+    it('should export request', () => {
+      subject.should.be.equal(Request)
     })
   })
 })

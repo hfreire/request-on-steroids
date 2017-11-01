@@ -7,7 +7,7 @@
 
 /* eslint-disable promise/no-callback-in-promise */
 
-describe('Request On Steroids', () => {
+describe('Request', () => {
   let subject
   let request
   let Brakes

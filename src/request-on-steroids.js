@@ -93,7 +93,7 @@ const defaultOptions = {
   }
 }
 
-class RequestOnSteroids {
+class Request {
   constructor (options = {}) {
     this._options = _.defaultsDeep(options, defaultOptions)
 
@@ -172,4 +172,4 @@ class RequestOnSteroids {
   }
 }
 
-module.exports = RequestOnSteroids
+module.exports = Request

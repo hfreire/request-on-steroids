@@ -12,9 +12,7 @@
 > An HTTP client with rate limiter, retry, circuit-breaker and tor support out-of-the-box.
 
 ### Features
-* Limits :raised_hand: rate of outgoing requests to behave like a good :earth_africa: Internet API :bowtie: citizen :white_check_mark: 
-* Retries :shit: failing requests in temporary and unexpected system and :boom: network failures :white_check_mark:
-* Uses [Brakes](https://github.com/awolden/brakes) circuit breakers to :hand: fail-fast until it is safe to retry :white_check_mark: 
+* Uses [perseverance](https://github.com/hfreire/perseverance) to add rate limit, retry and circuit breaker behaviour to your requests :white_check_mark:  
 * Supports [Bluebird](https://github.com/petkaantonov/bluebird) :bird: promises :white_check_mark:
 
 ### How to install

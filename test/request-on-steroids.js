@@ -10,13 +10,13 @@
 describe('Request', () => {
   let subject
   let request
-  let Brakes
   let RandomHttpUserAgent
+  let Perseverance
 
   before(() => {
     request = td.object([ 'defaults', 'get', 'post', 'put', 'patch', 'del', 'head' ])
 
-    Brakes = td.constructor([ 'exec' ])
+    Perseverance = td.constructor([ 'exec', 'circuitBreaker' ])
 
     RandomHttpUserAgent = td.object([ 'configure', 'get' ])
   })
@@ -87,39 +87,15 @@ describe('Request', () => {
     })
   })
 
-  describe('when constructing and loading brakes', () => {
+  describe('when constructing and loading perseverance', () => {
     beforeEach(() => {
       const Request = require('../src/request-on-steroids')
       subject = new Request()
     })
 
-    it('should create a circuit breaker with slaveCircuit function', () => {
-      subject._circuitBreaker.should.have.property('slaveCircuit')
-      subject._circuitBreaker.slaveCircuit.should.be.instanceOf(Function)
-    })
-  })
-
-  describe('when constructing and loading limiter', () => {
-    beforeEach(() => {
-      const Request = require('../src/request-on-steroids')
-      subject = new Request()
-    })
-
-    it('should create a queue with removeTokensAsync function', () => {
-      subject._rate.should.have.property('removeTokensAsync')
-      subject._rate.removeTokensAsync.should.be.instanceOf(Function)
-    })
-  })
-
-  describe('when constructing and loading queue', () => {
-    beforeEach(() => {
-      const Request = require('../src/request-on-steroids')
-      subject = new Request()
-    })
-
-    it('should create a queue with add function', () => {
-      subject._queue.should.have.property('add')
-      subject._queue.add.should.be.instanceOf(Function)
+    it('should create a perseverance with exec function', () => {
+      subject._perseverance.should.have.property('exec')
+      subject._perseverance.exec.should.be.instanceOf(Function)
     })
   })
 
@@ -371,14 +347,15 @@ describe('Request', () => {
 
   describe('when getting circuit breaker', () => {
     beforeEach(() => {
-      td.replace('brakes', Brakes)
+      td.replace('perseverance', Perseverance)
 
       const Request = require('../src/request-on-steroids')
       subject = new Request()
+      subject.circuitBreaker()
     })
 
     it('should return a brakes instance', () => {
-      subject.circuitBreaker.should.be.instanceOf(Brakes)
+      td.verify(Perseverance.prototype.circuitBreaker(), { times: 1 })
     })
   })
 })

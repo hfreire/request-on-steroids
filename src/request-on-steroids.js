@@ -87,8 +87,10 @@ class Request {
       }
     })
       .then(() => buildOptions.bind(this)(options))
-      .then((options) => this._perseverance.exec(() => this._request.getAsync(options)))
-      .then(responseHandler)
+      .then((options) => this._perseverance.exec(() => {
+        return this._request.getAsync(options)
+          .then(responseHandler)
+      }))
   }
 
   post (options, responseHandler = (response) => response) {
@@ -98,8 +100,10 @@ class Request {
       }
     })
       .then(() => buildOptions.bind(this)(options))
-      .then((options) => this._perseverance.exec(() => this._request.postAsync(options)))
-      .then(responseHandler)
+      .then((options) => this._perseverance.exec(() => {
+        return this._request.postAsync(options)
+          .then(responseHandler)
+      }))
   }
 
   put (options, responseHandler = (response) => response) {
@@ -120,8 +124,10 @@ class Request {
       }
     })
       .then(() => buildOptions.bind(this)(options))
-      .then((options) => this._perseverance.exec(() => this._request.patchAsync(options)))
-      .then(responseHandler)
+      .then((options) => this._perseverance.exec(() => {
+        return this._request.patchAsync(options)
+          .then(responseHandler)
+      }))
   }
 
   del (options, responseHandler = (response) => response) {
@@ -131,8 +137,10 @@ class Request {
       }
     })
       .then(() => buildOptions.bind(this)(options))
-      .then((options) => this._perseverance.exec(() => this._request.delAsync(options)))
-      .then(responseHandler)
+      .then((options) => this._perseverance.exec(() => {
+        return this._request.delAsync(options)
+          .then(responseHandler)
+      }))
   }
 
   head (options, responseHandler = (response) => response) {
@@ -142,8 +150,10 @@ class Request {
       }
     })
       .then(() => buildOptions.bind(this)(options))
-      .then((options) => this._perseverance.exec(() => this._request.headAsync(options)))
-      .then(responseHandler)
+      .then((options) => this._perseverance.exec(() => {
+        return this._request.headAsync(options)
+          .then(responseHandler)
+      }))
   }
 }
 

@@ -62,12 +62,17 @@ const defaultOptions = {
       period: 250,
       queue: { concurrency: 1 }
     }
-  }
+  },
+  'random-http-useragent': {}
 }
 
 class Request {
   constructor (options = {}) {
-    this._options = _.defaultsDeep(options, defaultOptions)
+    this.configure(options)
+  }
+
+  configure (options = {}) {
+    this._options = _.defaultsDeep({}, options, defaultOptions)
 
     this._request = Promise.promisifyAll(request.defaults(_.get(this._options, 'request')))
 

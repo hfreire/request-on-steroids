@@ -24,24 +24,45 @@ describe('Request', () => {
   afterEach(() => td.reset())
 
   describe('when constructing', () => {
-    const options = { request: {}, 'random-http-useragent': {} }
-
     beforeEach(() => {
       td.when(request.defaults(), { ignoreExtraArgs: true }).thenReturn(request)
       td.replace('request', request)
 
+      td.replace('perseverance', Perseverance)
+
       td.replace('random-http-useragent', RandomHttpUserAgent)
 
       const Request = require('../src/request-on-steroids')
-      subject = new Request(options)
+      subject = new Request()
     })
 
     it('should set default request options', () => {
-      td.verify(request.defaults(options.request))
+      const captor = td.matchers.captor()
+
+      td.verify(request.defaults(captor.capture()), { times: 1 })
+
+      const options = captor.value
+      options.should.have.property('gzip', true)
     })
 
-    it('should set default random-http-useragent options', () => {
-      td.verify(RandomHttpUserAgent.configure(options[ 'random-http-useragent' ]))
+    it('should construct perseverance instance with default options', () => {
+      const captor = td.matchers.captor()
+
+      td.verify(new Perseverance(captor.capture()), { times: 1 })
+
+      const options = captor.value
+      options.should.have.property('retry')
+      options.should.have.property('breaker')
+      options.should.have.property('rate')
+    })
+
+    it('should configure random-http-useragent with default options', () => {
+      const captor = td.matchers.captor()
+
+      td.verify(RandomHttpUserAgent.configure(captor.capture()), { times: 1 })
+
+      const options = captor.value
+      options.should.be.eql({})
     })
   })
 

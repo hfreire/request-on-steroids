@@ -375,7 +375,7 @@ describe('Request', () => {
       subject.circuitBreaker()
     })
 
-    it('should return a brakes instance', () => {
+    it('should call perseverance circuit breaker', () => {
       td.verify(Perseverance.prototype.circuitBreaker(), { times: 1 })
     })
   })

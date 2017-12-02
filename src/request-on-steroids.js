@@ -56,7 +56,7 @@ const defaultOptions = {
   socks: { socksHost: 'localhost', socksPort: 9050 },
   perseverance: {
     retry: { max_tries: 3, interval: 1000, timeout: 3000, throw_original: true },
-    breaker: { timeout: 12000, threshold: 80, circuitDuration: 30000 },
+    breaker: { timeout: 12000, threshold: 0.8, circuitDuration: 30000 },
     rate: {
       executions: 1,
       period: 250,

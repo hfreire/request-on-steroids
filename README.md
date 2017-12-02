@@ -12,7 +12,7 @@
 > An HTTP client with rate limiter, retry, circuit-breaker and tor support out-of-the-box.
 
 ### Features
-* Uses [perseverance](https://github.com/hfreire/perseverance) to add :raised_hand: rate limit, :poop: retry and :traffic_light: circuit breaker behaviour to your requests :white_check_mark:  
+* Uses [Perseverance](https://github.com/hfreire/perseverance) to add :raised_hand: rate limit, :poop: retry and :traffic_light: circuit breaker behaviour to your requests :white_check_mark:  
 * Supports [Bluebird](https://github.com/petkaantonov/bluebird) :bird: promises :white_check_mark:
 
 ### How to install

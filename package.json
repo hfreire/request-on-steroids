@@ -2,6 +2,9 @@
   "name": "request-on-steroids",
   "description": "An HTTP client with rate limiter, retry, circuit-breaker and tor support out-of-the-box",
   "version": "0.0.0",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -45,7 +48,8 @@
   },
   "config": {
     "pre-git": {
-      "commit-msg": "conventional"
+      "commit-msg": "conventional",
+      "allow-untracked-files": true
     }
   },
   "release": {

@@ -21,7 +21,7 @@
     "lodash": "4.17.5",
     "perseverance": "1.0.8",
     "random-http-useragent": "1.1.4",
-    "request": "2.83.0",
+    "request": "2.84.0",
     "socks5-http-client": "1.0.2",
     "socks5-https-client": "1.2.1"
   },

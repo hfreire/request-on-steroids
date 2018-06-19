@@ -23,7 +23,8 @@
     "random-http-useragent": "1.1.4",
     "request": "2.87.0",
     "socks5-http-client": "1.0.3",
-    "socks5-https-client": "1.2.1"
+    "socks5-https-client": "1.2.1",
+    "snyk": "^1.83.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -61,6 +62,9 @@
     "prepublish": "npm run compile",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "semantic-release": "./node_modules/.bin/semantic-release",
-    "commit": "./node_modules/.bin/commit-wizard"
-  }
+    "commit": "./node_modules/.bin/commit-wizard",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }

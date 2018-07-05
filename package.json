@@ -22,7 +22,7 @@
     "perseverance": "1.0.15",
     "random-http-useragent": "1.1.4",
     "request": "2.87.0",
-    "socks5-http-client": "1.0.3",
+    "socks5-http-client": "1.0.4",
     "socks5-https-client": "1.2.1"
   },
   "devDependencies": {

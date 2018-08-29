@@ -19,7 +19,7 @@
   "dependencies": {
     "bluebird": "3.5.1",
     "lodash": "4.17.5",
-    "perseverance": "1.0.15",
+    "perseverance": "1.0.16",
     "random-http-useragent": "1.1.4",
     "request": "2.88.0",
     "socks5-http-client": "1.0.3",

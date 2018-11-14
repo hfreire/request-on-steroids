@@ -56,7 +56,7 @@
   "scripts": {
     "clean": "rm -rf lib coverage",
     "lint": "./node_modules/.bin/eslint . --ext .json --ext .js",
-    "coverage": "node_modules/.bin/istanbul cover --include-all-sources --root src --print detail ./node_modules/mocha/bin/_mocha -- --recursive test",
+    "coverage": "./node_modules/.bin/istanbul cover --include-all-sources --root src --print detail ./node_modules/mocha/bin/_mocha -- --recursive test",
     "test": "npm run lint && npm run coverage",
     "compile": "npm run clean && mkdir -p lib && ./node_modules/.bin/babel src/ -d lib",
     "prepublish": "npm run compile",

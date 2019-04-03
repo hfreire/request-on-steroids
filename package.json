@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/hfreire/request-on-steroids#readme",
   "dependencies": {
-    "bluebird": "3.5.3",
+    "bluebird": "3.5.4",
     "lodash": "4.17.11",
     "perseverance": "1.0.19",
     "random-http-useragent": "1.1.5",

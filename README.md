@@ -26,7 +26,8 @@ All donation proceedings will go to the [Sverige för UNHCR](https://sverigeforu
 * [get-me-a-date](https://github.com/hfreire/get-me-a-date) - :heart_eyes: Help me get a :cupid: date tonight :first_quarter_moon_with_face:
 * [watch-rtp-play](https://github.com/hfreire/watch-rtp-play) - :tv: Watch and :radio: listen 🇵🇹 RTP Play without a :computer: browser
 * [tinder-wrapper](https://github.com/hfreire/tinder-wrapper) - A :revolving_hearts: Tinder :package: wrapper library
-
+* [happn-wrapper](https://github.com/hfreire/happn-wrapper) - A :revolving_hearts: Happn :package: wrapper library
+* [mint-wrapper](https://github.com/hfreire/mint-wrapper) - A :revolving_hearts: Mint :package: wrapper library
 
 ### License
 Read the [license](./LICENSE.md) for permissions and limitations.

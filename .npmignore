@@ -3,9 +3,8 @@ coverage/
 src/
 test/
 .babelrc
-.gitignore
 .eslintignore
 .eslintrc
+.gitignore
 .travis.yml
 README.md
-docs/

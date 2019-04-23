@@ -11,7 +11,7 @@ git clone https://github.com/my-github-username/request-on-steroids
 
 Change current directory
 ```
-cd get-me-date
+cd request-on-steroids
 ```
 
 Install NPM dependencies

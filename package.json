@@ -57,6 +57,7 @@
   "scripts": {
     "clean": "rm -rf lib coverage",
     "snyk:test": "./node_modules/.bin/snyk test",
+    "snyk:protect": "./node_modules/.bin/snyk protect",
     "lint": "./node_modules/.bin/eslint . --ext .json --ext .js",
     "coverage": "./node_modules/.bin/istanbul cover --include-all-sources --root src --print detail ./node_modules/mocha/bin/_mocha -- --recursive test",
     "prepare": "npm run snyk:protect",

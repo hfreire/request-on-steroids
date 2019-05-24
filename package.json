@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/hfreire/request-on-steroids#readme",
   "dependencies": {
-    "bluebird": "3.5.4",
+    "bluebird": "3.5.5",
     "lodash": "4.17.11",
     "perseverance": "1.0.20",
     "random-http-useragent": "1.1.5",
@@ -45,7 +45,7 @@
     "mocha": "6.1.4",
     "pre-git": "3.17.1",
     "semantic-release": "15.13.12",
-    "snyk": "1.167.2",
+    "snyk": "1.167.1",
     "testdouble": "3.11.0"
   },
   "config": {

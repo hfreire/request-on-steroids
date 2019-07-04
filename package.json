@@ -23,7 +23,8 @@
     "random-http-useragent": "1.1.13",
     "request": "2.88.0",
     "socks5-http-client": "1.0.4",
-    "socks5-https-client": "1.2.1"
+    "socks5-https-client": "1.2.1",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -45,7 +46,6 @@
     "mocha": "6.1.4",
     "pre-git": "3.17.1",
     "semantic-release": "15.13.18",
-    "snyk": "1.189.0",
     "testdouble": "3.12.1"
   },
   "config": {
@@ -60,13 +60,14 @@
     "snyk:protect": "./node_modules/.bin/snyk protect",
     "lint": "./node_modules/.bin/eslint . --ext .json --ext .js",
     "coverage": "./node_modules/.bin/istanbul cover --include-all-sources --root src --print detail ./node_modules/mocha/bin/_mocha -- --recursive test",
-    "prepare": "npm run snyk:protect",
+    "prepare": "npm run snyk-protect; npm run snyk:protect",
     "test": "npm run lint && npm run coverage",
     "compile": "npm run clean && mkdir -p lib && ./node_modules/.bin/babel src/ -d lib",
     "prepublish": "npm run compile",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "semantic-release": "./node_modules/.bin/semantic-release",
-    "commit": "./node_modules/.bin/commit-wizard"
+    "commit": "./node_modules/.bin/commit-wizard",
+    "snyk-protect": "snyk protect"
   },
   "snyk": true
 }

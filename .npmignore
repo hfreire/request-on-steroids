@@ -1,10 +1,11 @@
+.dependabot/
+.github/
 .idea/
 coverage/
 src/
 test/
 .babelrc
-.eslintignore
-.eslintrc
+.editorconfig
+.eslint*
 .gitignore
-.travis.yml
-README.md
+.snyk

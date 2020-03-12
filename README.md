@@ -2,6 +2,7 @@
 
 [![](https://github.com/hfreire/request-on-steroids/workflows/ci/badge.svg)](https://github.com/hfreire/request-on-steroids/actions?workflow=ci)
 [![Coverage Status](https://coveralls.io/repos/github/hfreire/request-on-steroids/badge.svg?branch=master)](https://coveralls.io/github/hfreire/request-on-steroids?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/hfreire/request-on-steroids/badge.svg)](https://snyk.io/test/github/hfreire/request-on-steroids)
 [![](https://img.shields.io/github/release/hfreire/request-on-steroids.svg)](https://github.com/hfreire/request-on-steroids/releases)
 [![Version](https://img.shields.io/npm/v/request-on-steroids.svg)](https://www.npmjs.com/package/request-on-steroids)
 [![Downloads](https://img.shields.io/npm/dt/request-on-steroids.svg)](https://www.npmjs.com/package/request-on-steroids)

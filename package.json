@@ -20,7 +20,7 @@
     "bluebird": "3.7.2",
     "lodash": "4.17.21",
     "perseverance": "1.0.61",
-    "random-http-useragent": "1.1.34",
+    "random-http-useragent": "1.1.38",
     "request": "2.88.2",
     "socks5-http-client": "1.0.4",
     "socks5-https-client": "1.2.1"
